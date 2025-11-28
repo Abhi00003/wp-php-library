@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "wp-content/themes/hello-elementor-child",
+  "framework": null,
+  "installCommand": "npm install",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ."
+}
+
