@@ -1,0 +1,33 @@
+{
+  "name": "volatusaerospace-wordpress",
+  "version": "1.0.0",
+  "description": "WordPress site for Volatus Aerospace with improved navigation and UI/UX using Hello Elementor theme",
+  "main": "index.js",
+  "scripts": {
+    "dev": "gulp watch",
+    "build": "gulp build",
+    "start": "docker-compose up -d",
+    "stop": "docker-compose down",
+    "install-wp": "bash scripts/install-wordpress.sh"
+  },
+  "keywords": [
+    "wordpress",
+    "elementor",
+    "volatus-aerospace"
+  ],
+  "author": "Developer",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sass": "^5.1.0",
+    "gulp-autoprefixer": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^3.0.0",
+    "browser-sync": "^2.29.3",
+    "sass": "^1.69.5"
+  },
+  "dependencies": {}
+}
+

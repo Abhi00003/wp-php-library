@@ -1,0 +1,571 @@
+// Variables
+$primary-color: #0066cc;
+$secondary-color: #003366;
+$text-color: #333333;
+$light-gray: #f5f5f5;
+$border-color: #e0e0e0;
+$white: #ffffff;
+$black: #000000;
+
+$font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+$font-heading: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$breakpoint-mobile: 768px;
+$breakpoint-tablet: 1024px;
+$breakpoint-desktop: 1200px;
+
+// Mixins
+@mixin transition($property: all, $duration: 0.3s, $easing: ease) {
+    transition: $property $duration $easing;
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+// Base Styles
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: $font-primary;
+    color: $text-color;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+// Header Styles
+.site-header {
+    background-color: $white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+
+    .header-container {
+        @include container;
+    }
+
+    .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 0;
+    }
+
+    .site-branding {
+        flex-shrink: 0;
+
+        .custom-logo {
+            max-height: 60px;
+            width: auto;
+        }
+
+        .site-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+
+            a {
+                color: $primary-color;
+                text-decoration: none;
+                @include transition(color);
+
+                &:hover {
+                    color: $secondary-color;
+                }
+            }
+        }
+
+        .site-description {
+            margin: 5px 0 0;
+            font-size: 14px;
+            color: #666;
+        }
+    }
+
+    .main-navigation {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 20px;
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            flex-direction: column;
+            gap: 5px;
+
+            .menu-toggle-icon {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                width: 25px;
+                height: 20px;
+
+                span {
+                    display: block;
+                    height: 3px;
+                    width: 100%;
+                    background-color: $text-color;
+                    @include transition;
+                }
+            }
+
+            &[aria-expanded="true"] {
+                .menu-toggle-icon span {
+                    &:nth-child(1) {
+                        transform: rotate(45deg) translate(8px, 8px);
+                    }
+                    &:nth-child(2) {
+                        opacity: 0;
+                    }
+                    &:nth-child(3) {
+                        transform: rotate(-45deg) translate(7px, -7px);
+                    }
+                }
+            }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 30px;
+
+            li {
+                position: relative;
+
+                a {
+                    color: $text-color;
+                    text-decoration: none;
+                    font-weight: 500;
+                    font-size: 15px;
+                    padding: 10px 0;
+                    display: block;
+                    @include transition(color);
+
+                    &:hover {
+                        color: $primary-color;
+                    }
+                }
+
+                &.current-menu-item > a,
+                &.current-page-ancestor > a {
+                    color: $primary-color;
+                }
+
+                // Dropdown menu
+                .sub-menu {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background-color: $white;
+                    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                    list-style: none;
+                    margin: 0;
+                    padding: 10px 0;
+                    min-width: 200px;
+                    opacity: 0;
+                    visibility: hidden;
+                    transform: translateY(-10px);
+                    @include transition;
+
+                    li {
+                        a {
+                            padding: 10px 20px;
+                            display: block;
+                        }
+                    }
+                }
+
+                &:hover .sub-menu {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(0);
+                }
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            .search-toggle {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 8px;
+                color: $text-color;
+                @include transition(color);
+
+                &:hover {
+                    color: $primary-color;
+                }
+
+                svg {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    // Search Overlay
+    .search-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+        display: none;
+        @include flex-center;
+
+        &.active {
+            display: flex;
+        }
+
+        .search-overlay-content {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            padding: 0 20px;
+
+            .search-form {
+                display: flex;
+                gap: 10px;
+
+                .search-field {
+                    flex: 1;
+                    padding: 15px 20px;
+                    font-size: 18px;
+                    border: 2px solid $white;
+                    background-color: transparent;
+                    color: $white;
+                    border-radius: 4px;
+
+                    &::placeholder {
+                        color: rgba(255, 255, 255, 0.7);
+                    }
+
+                    &:focus {
+                        outline: none;
+                        border-color: $primary-color;
+                    }
+                }
+
+                .search-submit {
+                    padding: 15px 25px;
+                    background-color: $primary-color;
+                    color: $white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    @include transition(background-color);
+
+                    &:hover {
+                        background-color: $secondary-color;
+                    }
+
+                    svg {
+                        display: block;
+                    }
+                }
+            }
+
+            .search-close {
+                position: absolute;
+                top: -50px;
+                right: 20px;
+                background: none;
+                border: none;
+                color: $white;
+                cursor: pointer;
+                padding: 10px;
+                @include transition(color);
+
+                &:hover {
+                    color: $primary-color;
+                }
+
+                svg {
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+// Mobile Navigation
+@media (max-width: $breakpoint-mobile) {
+    .site-header {
+        .main-navigation {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: $white;
+                flex-direction: column;
+                padding: 20px;
+                overflow-y: auto;
+                transform: translateX(-100%);
+                @include transition(transform);
+
+                &.active {
+                    transform: translateX(0);
+                }
+
+                li {
+                    width: 100%;
+
+                    .sub-menu {
+                        position: static;
+                        opacity: 1;
+                        visibility: visible;
+                        transform: none;
+                        box-shadow: none;
+                        padding-left: 20px;
+                        margin-top: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Content Styles
+.site-content {
+    min-height: calc(100vh - 200px);
+}
+
+.site-main {
+    @include container;
+    padding: 40px 20px;
+}
+
+// Footer Styles
+.site-footer {
+    background-color: #1a1a1a;
+    color: #cccccc;
+    padding: 60px 0 20px;
+    margin-top: 60px;
+
+    .footer-container {
+        @include container;
+    }
+
+    .footer-widgets {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+
+        .footer-column {
+            h3.widget-title {
+                color: $white;
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 20px;
+            }
+
+            p {
+                line-height: 1.8;
+                margin-bottom: 15px;
+            }
+
+            .footer-menu,
+            .footer-links {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+
+                li {
+                    margin-bottom: 10px;
+
+                    a {
+                        color: #cccccc;
+                        text-decoration: none;
+                        @include transition(color);
+
+                        &:hover {
+                            color: $primary-color;
+                        }
+                    }
+                }
+            }
+
+            .contact-info {
+                p {
+                    margin-bottom: 15px;
+
+                    strong {
+                        color: $white;
+                        display: block;
+                        margin-bottom: 5px;
+                    }
+
+                    a {
+                        color: #cccccc;
+                        text-decoration: none;
+                        @include transition(color);
+
+                        &:hover {
+                            color: $primary-color;
+                        }
+                    }
+                }
+            }
+
+            .social-media {
+                margin-top: 20px;
+
+                h4 {
+                    color: $white;
+                    font-size: 16px;
+                    margin-bottom: 15px;
+                }
+
+                .social-links {
+                    display: flex;
+                    gap: 15px;
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+
+                    li {
+                        a {
+                            display: block;
+                            width: 40px;
+                            height: 40px;
+                            @include flex-center;
+                            background-color: rgba(255, 255, 255, 0.1);
+                            border-radius: 50%;
+                            color: #cccccc;
+                            @include transition;
+
+                            &:hover {
+                                background-color: $primary-color;
+                                color: $white;
+                                transform: translateY(-3px);
+                            }
+
+                            svg {
+                                width: 20px;
+                                height: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 20px;
+        margin-top: 40px;
+
+        .footer-bottom-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+
+            .copyright {
+                margin: 0;
+                font-size: 14px;
+            }
+
+            .footer-legal {
+                display: flex;
+                gap: 15px;
+                align-items: center;
+
+                a {
+                    color: #cccccc;
+                    text-decoration: none;
+                    font-size: 14px;
+                    @include transition(color);
+
+                    &:hover {
+                        color: $primary-color;
+                    }
+                }
+
+                .separator {
+                    color: rgba(255, 255, 255, 0.3);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: $breakpoint-mobile) {
+    .site-footer {
+        .footer-widgets {
+            grid-template-columns: 1fr;
+        }
+
+        .footer-bottom {
+            .footer-bottom-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    }
+}
+
+// Utility Classes
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background-color: $primary-color;
+    color: $white;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 10000;
+
+    &:focus {
+        top: 0;
+    }
+}
+
+// Smooth Scroll
+html {
+    scroll-behavior: smooth;
+}
+

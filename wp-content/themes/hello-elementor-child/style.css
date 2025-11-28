@@ -1,0 +1,19 @@
+/*
+Theme Name: Hello Elementor Child
+Theme URI: https://elementor.com/hello-theme/
+Description: Child theme for Hello Elementor with custom navigation and UI/UX improvements for Volatus Aerospace
+Author: Developer
+Author URI: https://volatusaerospace.com
+Template: hello-elementor
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: hello-elementor-child
+*/
+
+/* Import parent theme styles */
+@import url('../hello-elementor/style.css');
+
+/* Custom Styles */
+@import url('assets/css/custom-styles.css');
+
